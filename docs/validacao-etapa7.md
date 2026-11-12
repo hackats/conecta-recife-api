@@ -36,3 +36,7 @@ A revisão acrescentou exclusão explícita por sessão com `ignorados`, respost
 ## Ajuste após revisão da experiência
 
 O parâmetro de desinteresse foi removido para simplificar a experiência. O contexto de navegação vale para a sessão atual, e um teste verifica que o serviço volta a estar disponível em uma nova sessão. A proteção contra picos e o cabeçalho de cache continuam ativos. A recomendação não determina elegibilidade.
+
+## Atualização do escopo dos dados
+
+Após confirmação da equipe, a entrega considera somente os arquivos disponíveis no Drive. A validação com o CSV de visitas anônimas deixa de ser uma pendência obrigatória. O suporte a esse arquivo é opcional. A operação sem login usa o contexto da sessão, catálogo e uso semanal disponíveis, com indicador explícito da disponibilidade do sinal de transição. A integração frontend permanece prevista para etapa posterior.

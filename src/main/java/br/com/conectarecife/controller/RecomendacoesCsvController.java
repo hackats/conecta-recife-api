@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.file.*;
 
+@io.swagger.v3.oas.annotations.tags.Tag(name = "Exportação CSV")
 @RestController
 public class RecomendacoesCsvController {
     private final RecomendacoesCsvService csv;
@@ -17,6 +18,8 @@ public class RecomendacoesCsvController {
         this.csv = csv;
     }
 
+    @io.swagger.v3.oas.annotations.Operation(summary = "Gerar recomendações completas",
+            description = "Gera e valida o arquivo UTF-8 para todos os cidadãos carregados, com até dez serviços distintos por cidadão. Operação custosa, adequada à preparação da entrega. Retorna download de recomendacoes.csv.")
     @GetMapping("/recomendacoes.csv")
     public ResponseEntity<InputStreamResource> gerar() throws IOException {
         Path arquivo = Files.createTempFile("recomendacoes-download-", ".csv");
@@ -39,6 +42,8 @@ public class RecomendacoesCsvController {
         }
     }
 
+    @io.swagger.v3.oas.annotations.Operation(summary = "Validar arquivo de recomendações",
+            description = "Envie o arquivo CSV no campo multipart arquivo. Valida cobertura, posições, serviços e UTF-8. CSV inválido retorna HTTP 200 com valido=false e lista limitada de erros.")
     @PostMapping(value = "/recomendacoes/validar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public RecomendacoesCsvService.Validacao validar(@RequestPart("arquivo") MultipartFile arquivo)
             throws IOException {

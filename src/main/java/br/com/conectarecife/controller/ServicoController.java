@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+@io.swagger.v3.oas.annotations.tags.Tag(name = "Serviços")
 @RestController
 @RequestMapping("/servicos")
 public class ServicoController {
@@ -16,6 +17,8 @@ public class ServicoController {
         this.store = store;
     }
 
+    @io.swagger.v3.oas.annotations.Operation(summary = "Consultar jornada",
+            description = "Requisitos e passos derivados do catálogo em linguagem simples.")
     @GetMapping("/{id}/jornada")
     public br.com.conectarecife.service.JornadaServico.Jornada jornada(@PathVariable Integer id) {
         return br.com.conectarecife.service.JornadaServico.criar(buscarPorId(id));
@@ -25,6 +28,8 @@ public class ServicoController {
     public record Progresso(java.util.List<ItemProgresso> checklist, int concluidos, int total,
                             int percentual, String descricao, boolean autodeclarado) {}
 
+    @io.swagger.v3.oas.annotations.Operation(summary = "Calcular progresso",
+            description = "Envie as posições concluídas, por exemplo [1,2], ou [] para desmarcar todas. Posições começam em 1. Progresso autodeclarado, sem persistência no servidor. Não confirma conclusão junto ao órgão.")
     @PostMapping("/{id}/jornada/progresso")
     public Progresso progresso(@PathVariable Integer id, @RequestBody java.util.List<Integer> concluidos) {
         Servico servico = buscarPorId(id);
@@ -44,6 +49,8 @@ public class ServicoController {
         return new Progresso(itens, marcados.size(), passos.size(), percentual, descricao, true);
     }
 
+    @io.swagger.v3.oas.annotations.Operation(summary = "Consultar serviço",
+            description = "Consulta um serviço existente do catálogo, por exemplo 1.")
     @GetMapping("/{id}")
     public Servico buscarPorId(@PathVariable Integer id) {
         Servico servico = store.findServico(id);

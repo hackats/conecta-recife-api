@@ -192,3 +192,13 @@ O JAR foi empacotado e validado por uma chamada HTTP real. Execute scripts/inici
 ## Melhorias da mentoria e validação final
 
 A integração das etapas 5 e 6 e as melhorias de sessão anônima, busca e checklist estão na main. Consulte [contratos da mentoria](docs/mentoria.md), [validação local da etapa 7](docs/validacao-etapa7.md) e [roteiro de apresentação e plano B](docs/pitch-etapa7.md). O relatório da etapa 7 registra os resultados atuais e as pendências de visitas anônimas, frontend e publicação.
+
+## Swagger e OpenAPI
+
+Com a aplicação em execução, abra `http://localhost:8080/swagger-ui/index.html`. Os contratos também estão em `http://localhost:8080/v3/api-docs` (JSON) e `/v3/api-docs.yaml` (YAML). Ajuste a porta se iniciar com `--server.port`.
+
+Expanda uma operação, clique em **Try it out**, preencha os parâmetros ou use o exemplo do corpo e clique em **Execute**. Para começar, consulte `/cidadaos/{id}` com `C007938` e `/servicos/{id}` com `1`. Solicitações, consentimento e eventos executados pelo Swagger alteram o estado em memória da API. Para validar um CSV, selecione o arquivo no campo `arquivo` do endpoint `/recomendacoes/validar`. A geração completa em `/recomendacoes.csv` pode demorar e produzir um arquivo grande.
+
+A documentação usa springdoc-openapi 2.10.0, da linha compatível com Spring Boot 3.5, conforme a [matriz oficial](https://springdoc.org/v2/). Os esquemas são gerados a partir dos tipos Java e os testes conferem a cobertura dos endpoints, exemplos, respostas e carregamento da interface.
+
+A entrega usa os arquivos efetivamente disponíveis no Drive. A recomendação sem login serve ao fluxo existente do aplicativo, sem exigir uma aba adicional. O arquivo de visitas anônimas citado no tutorial é uma entrada opcional do carregador. Sua ausência não bloqueia a aplicação nem a entrega baseada em catálogo, contexto da sessão e uso semanal. `transicoesDisponiveis=false` informa a disponibilidade desse sinal específico.

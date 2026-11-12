@@ -23,3 +23,9 @@ O progresso é autodeclarado, com `autodeclarado=true`. A confirmação oficial 
 Na integração visual, use checkboxes com rótulos completos, foco visível e navegação por teclado. Apresente a descrição textual junto ao progresso, com valores acessíveis de mínimo 0, máximo 100 e valor atual. Este repositório contém a API. A integração visual no Kodiak depende do frontend.
 
 A revisão adicional testa um pico isolado em uma amostra de duas semanas, o retorno de serviços em uma nova sessão e a independência entre sessões.
+
+## Escopo confirmado pela equipe
+
+A equipe confirmou que a base da entrega é a planilha disponível no Drive. O CSV de visitas anônimas citado no tutorial é opcional e não constitui requisito pendente da entrega. O carregador mantém suporte a esse arquivo, caso ele venha a existir. A resposta informa a disponibilidade das transições. O endpoint sem login é consumido pelo fluxo existente do app, sem criação de aba ou modo adicional.
+
+Os contratos interativos de todos os endpoints estão em `/swagger-ui/index.html`, com a especificação em `/v3/api-docs`.

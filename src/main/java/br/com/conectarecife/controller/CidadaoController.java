@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+@io.swagger.v3.oas.annotations.tags.Tag(name = "Cidadãos")
 @RestController
 @RequestMapping("/cidadaos")
 public class CidadaoController {
@@ -24,6 +25,8 @@ public class CidadaoController {
         this.recomendador = recomendador;
     }
 
+    @io.swagger.v3.oas.annotations.Operation(summary = "Consultar cidadão",
+            description = "Consulta pelo identificador simulado, por exemplo C007938.")
     @GetMapping("/{id}")
     public Cidadao buscarPorId(@PathVariable String id) {
         Cidadao cidadao = store.findCidadao(id);
@@ -34,11 +37,15 @@ public class CidadaoController {
         return cidadao;
     }
 
+    @io.swagger.v3.oas.annotations.Operation(summary = "Recomendar serviços",
+            description = "Até dez serviços distintos ainda não acessados, com motivo. Considera perfil, histórico, transições e consentimento.")
     @GetMapping("/{id}/recomendacoes")
     public List<Recomendacao> listarRecomendacoes(@PathVariable String id) {
         return recomendador.recomendar(buscarPorId(id));
     }
 
+    @io.swagger.v3.oas.annotations.Operation(summary = "Consultar histórico",
+            description = "Cliques do cidadão simulado.")
     @GetMapping("/{id}/cliques")
     public List<Clique> listarCliques(@PathVariable String id) {
         if (store.findCidadao(id) == null) {
