@@ -20,6 +20,7 @@ public class DadosStore {
     private Map<String, List<Clique>> cliquesPorCidadao = Map.of();
 
     private Map<Integer, Integer> popularidade = Map.of();
+    private Map<Integer, Map<Integer, Integer>> transicoes = Map.of();
     private Map<String, Map<Integer, Integer>> popularidadePorFaixa = Map.of();
 
     private Map<String, Map<Integer, Integer>> popularidadePorPerfil = Map.of();
@@ -59,6 +60,39 @@ public class DadosStore {
         this.popularidadePorFaixa = Map.copyOf(porFaixa);
         porPerfil.replaceAll((publico, contagens) -> Map.copyOf(contagens));
         this.popularidadePorPerfil = Map.copyOf(porPerfil);
+        this.transicoes = construirTransicoes(cliques);
+    }
+
+    private record Sessao(String cidadao, String sessao) {}
+
+    private static Map<Integer, Map<Integer, Integer>> construirTransicoes(List<Clique> cliques) {
+        var sessoes = new HashMap<Sessao, java.util.ArrayList<Clique>>();
+        for (Clique clique : cliques) {
+            if (clique.sessaoId() != null && !clique.sessaoId().isBlank()
+                    && clique.ordemNaSessao() != null) {
+                sessoes.computeIfAbsent(new Sessao(clique.cidadaoId(), clique.sessaoId()),
+                        ignored -> new java.util.ArrayList<>()).add(clique);
+            }
+        }
+        var resultado = new HashMap<Integer, Map<Integer, Integer>>();
+        for (var sessao : sessoes.values()) {
+            sessao.sort(java.util.Comparator.comparing(Clique::ordemNaSessao));
+            for (int i = 1; i < sessao.size(); i++) {
+                Clique anterior = sessao.get(i - 1);
+                Clique atual = sessao.get(i);
+                if (atual.ordemNaSessao() == anterior.ordemNaSessao() + 1
+                        && !atual.servicoId().equals(anterior.servicoId())) {
+                    resultado.computeIfAbsent(anterior.servicoId(), ignored -> new HashMap<>())
+                            .merge(atual.servicoId(), 1, Integer::sum);
+                }
+            }
+        }
+        resultado.replaceAll((id, destinos) -> Map.copyOf(destinos));
+        return Map.copyOf(resultado);
+    }
+
+    public Map<Integer, Integer> transicoesDe(Integer origem) {
+        return transicoes.getOrDefault(origem, Map.of());
     }
 
     public Cidadao findCidadao(String id) {

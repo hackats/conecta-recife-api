@@ -1,0 +1,183 @@
+{
+  "pesosEscolhidos" : {
+    "popularidade" : 1.0,
+    "perfil" : 0.5,
+    "transicao" : 4.0
+  },
+  "teste" : {
+    "corte" : "2026-09-06",
+    "fimExclusivo" : "2026-09-28",
+    "cliquesTreino" : 472478,
+    "cidadaosComAcessosFuturos" : 40762,
+    "resultados" : [ {
+      "pesos" : {
+        "popularidade" : 1.0,
+        "perfil" : 1.0,
+        "transicao" : 0.0
+      },
+      "elegiveis" : 27897,
+      "acertos" : 16446,
+      "hit10" : 0.5895257554575761
+    }, {
+      "pesos" : {
+        "popularidade" : 1.0,
+        "perfil" : 0.5,
+        "transicao" : 4.0
+      },
+      "elegiveis" : 27897,
+      "acertos" : 16806,
+      "hit10" : 0.6024303688568663
+    } ]
+  },
+  "validacao" : {
+    "corte" : "2026-08-17",
+    "fimExclusivo" : "2026-09-06",
+    "cliquesTreino" : 353021,
+    "cidadaosComAcessosFuturos" : 40478,
+    "resultados" : [ {
+      "pesos" : {
+        "popularidade" : 1.0,
+        "perfil" : 1.0,
+        "transicao" : 0.0
+      },
+      "elegiveis" : 29120,
+      "acertos" : 17634,
+      "hit10" : 0.6055631868131868
+    }, {
+      "pesos" : {
+        "popularidade" : 1.0,
+        "perfil" : 0.0,
+        "transicao" : 0.0
+      },
+      "elegiveis" : 29120,
+      "acertos" : 16850,
+      "hit10" : 0.5786401098901099
+    }, {
+      "pesos" : {
+        "popularidade" : 1.0,
+        "perfil" : 0.0,
+        "transicao" : 1.0
+      },
+      "elegiveis" : 29120,
+      "acertos" : 17569,
+      "hit10" : 0.603331043956044
+    }, {
+      "pesos" : {
+        "popularidade" : 1.0,
+        "perfil" : 0.0,
+        "transicao" : 2.0
+      },
+      "elegiveis" : 29120,
+      "acertos" : 17855,
+      "hit10" : 0.6131524725274725
+    }, {
+      "pesos" : {
+        "popularidade" : 1.0,
+        "perfil" : 0.0,
+        "transicao" : 4.0
+      },
+      "elegiveis" : 29120,
+      "acertos" : 18115,
+      "hit10" : 0.6220810439560439
+    }, {
+      "pesos" : {
+        "popularidade" : 1.0,
+        "perfil" : 0.5,
+        "transicao" : 0.0
+      },
+      "elegiveis" : 29120,
+      "acertos" : 17361,
+      "hit10" : 0.5961881868131869
+    }, {
+      "pesos" : {
+        "popularidade" : 1.0,
+        "perfil" : 0.5,
+        "transicao" : 1.0
+      },
+      "elegiveis" : 29120,
+      "acertos" : 18107,
+      "hit10" : 0.6218063186813186
+    }, {
+      "pesos" : {
+        "popularidade" : 1.0,
+        "perfil" : 0.5,
+        "transicao" : 2.0
+      },
+      "elegiveis" : 29120,
+      "acertos" : 18219,
+      "hit10" : 0.6256524725274726
+    }, {
+      "pesos" : {
+        "popularidade" : 1.0,
+        "perfil" : 0.5,
+        "transicao" : 4.0
+      },
+      "elegiveis" : 29120,
+      "acertos" : 18232,
+      "hit10" : 0.6260989010989011
+    }, {
+      "pesos" : {
+        "popularidade" : 1.0,
+        "perfil" : 1.0,
+        "transicao" : 1.0
+      },
+      "elegiveis" : 29120,
+      "acertos" : 18113,
+      "hit10" : 0.6220123626373626
+    }, {
+      "pesos" : {
+        "popularidade" : 1.0,
+        "perfil" : 1.0,
+        "transicao" : 2.0
+      },
+      "elegiveis" : 29120,
+      "acertos" : 18204,
+      "hit10" : 0.6251373626373626
+    }, {
+      "pesos" : {
+        "popularidade" : 1.0,
+        "perfil" : 1.0,
+        "transicao" : 4.0
+      },
+      "elegiveis" : 29120,
+      "acertos" : 18150,
+      "hit10" : 0.623282967032967
+    }, {
+      "pesos" : {
+        "popularidade" : 1.0,
+        "perfil" : 2.0,
+        "transicao" : 0.0
+      },
+      "elegiveis" : 29120,
+      "acertos" : 17527,
+      "hit10" : 0.6018887362637363
+    }, {
+      "pesos" : {
+        "popularidade" : 1.0,
+        "perfil" : 2.0,
+        "transicao" : 1.0
+      },
+      "elegiveis" : 29120,
+      "acertos" : 17878,
+      "hit10" : 0.6139423076923077
+    }, {
+      "pesos" : {
+        "popularidade" : 1.0,
+        "perfil" : 2.0,
+        "transicao" : 2.0
+      },
+      "elegiveis" : 29120,
+      "acertos" : 17988,
+      "hit10" : 0.6177197802197802
+    }, {
+      "pesos" : {
+        "popularidade" : 1.0,
+        "perfil" : 2.0,
+        "transicao" : 4.0
+      },
+      "elegiveis" : 29120,
+      "acertos" : 17937,
+      "hit10" : 0.6159684065934066
+    } ]
+  }
+}

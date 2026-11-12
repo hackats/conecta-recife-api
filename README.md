@@ -1,4 +1,4 @@
-# Hacka/TS — Conecta Recife (Etapas 1 e 2)
+# Hacka/TS — Conecta Recife (Etapas 1, 2 e 3)
 
 Backend **Java 21 + Spring Boot 3.5.7**, Maven, com três `record` (`Cidadao`, `Servico`, `Clique`), leitura robusta dos CSVs e consultas REST.
 
@@ -97,9 +97,40 @@ server.port=8080
 
 `GET /cidadaos/{id}/recomendacoes` devolve até dez objetos com `servicoId`, `nome` e `motivo`. Cidadãos desconhecidos recebem HTTP 404. Serviços já acessados pelo cidadão são excluídos.
 
-A pontuação soma o logaritmo de 1 mais os cliques gerais, duas vezes o mesmo cálculo para a faixa etária e o mesmo cálculo para o segmento de perfil com mais cliques naquele serviço. A correspondência entre marcador e público-alvo vale 5 pontos e um tema em comum com os serviços acessados vale 4 pontos. Empates são resolvidos pelo menor identificador. Sem cliques próprios, ainda entram os sinais de popularidade e perfil.
+A linha de base da etapa 2 soma o logaritmo de 1 mais os cliques gerais, duas vezes o mesmo cálculo para a faixa etária e o mesmo cálculo para o segmento de perfil com mais cliques naquele serviço. A correspondência entre marcador e público-alvo vale 5 pontos e um tema em comum com os serviços acessados vale 4 pontos. Empates são resolvidos pelo menor identificador. Sem cliques próprios, ainda entram os sinais de popularidade e perfil.
 
 
 ## Verificações incluídas
 
 `Etapa1IntegrationTest` verifica as três contagens, os dois endpoints, os erros 404 e a listagem de cliques. Execute `mvn test` para validar tudo no ambiente com Maven disponível.
+
+## 7. Transições e avaliação temporal
+
+A etapa 3 usa a fórmula `a * popularidade + b * perfil + c * transicao`. Popularidade agrega os logaritmos dos cliques gerais e segmentados descritos acima. Perfil soma a compatibilidade com público-alvo e temas visitados. Transição é o logaritmo de 1 mais a soma das ocorrências X→Y, considerando os serviços X já acessados pelo cidadão.
+
+As transições usam pares consecutivos na ordem da mesma sessão e do mesmo cidadão. Repetições X→X, sessões sem identificador, ordens ausentes e lacunas de ordem são ignoradas. O ranking mantém a exclusão dos serviços usados, o limite de dez e o desempate pelo identificador. Os motivos consideram apenas componentes com peso positivo.
+
+O hit@10 é a fração dos cidadãos elegíveis com pelo menos um serviço futuro inédito entre as dez recomendações. Cada cidadão conta uma vez. Cidadãos com apenas repetições de serviços anteriores ao corte ficam fora do denominador. Cidadãos sem histórico anterior participam quando têm um alvo futuro. Todos os índices de popularidade, perfil e transições usam exclusivamente cliques anteriores ao corte. As recomendações permanecem fixas durante cada janela de avaliação.
+
+Execute a avaliação com os CSVs locais na pasta data.
+
+```powershell
+mvn test -Dtest=AvaliacaoDadosTest -Davaliar=true
+```
+
+O comando produz `target/avaliacao-temporal.json`, contendo apenas métricas agregadas. Por padrão, os cortes são as datas nos percentis 60 e 80 dos cliques ordenados. A primeira janela escolhe os pesos em 16 combinações, mantendo a=1, b em {0, 0.5, 1, 2} e c em {0, 1, 2, 4}. Fixar a remove a redundância de multiplicar todos os pesos pelo mesmo fator. A janela final compara a linha de base (1, 1, 0) e os pesos escolhidos, após reconstruir os índices com os acessos anteriores ao segundo corte. Empates favorecem o primeiro candidato, começando pela linha de base.
+
+Para reproduzir cortes específicos, acrescente `-DcorteValidacao=AAAA-MM-DD -DcorteTeste=AAAA-MM-DD`. Os cortes devem produzir janelas distintas e a validação precisa conter cidadãos elegíveis. A avaliação completa é opcional na suíte cotidiana devido ao custo de comparar o catálogo para cada cidadão.
+
+Limitação da medição — perfis e catálogo são os snapshots fornecidos. Sem versões históricas desses arquivos, a separação temporal é garantida para os cliques. O hit@10 mede antecipação de acessos aos serviços, e a conclusão de solicitações será medida na etapa de eventos.
+
+### Resultado da etapa 3
+
+Validação de 17/08/2026 até 05/09/2026, com treino anterior a 17/08. Teste de 06/09/2026 até 27/09/2026, com treino anterior a 06/09. A API foi configurada com a=1, b=0.5 e c=4, escolhidos na validação. Os valores podem ser substituídos pelas propriedades `app.recomendacao.a`, `app.recomendacao.b` e `app.recomendacao.c`.
+
+| Versão no teste final | Cidadãos elegíveis | Acertos | hit@10 |
+| --- | --- | --- | --- |
+| Linha de base (1, 1, 0) | 27.897 | 16.446 | 58,9526% |
+| Pesos escolhidos (1, 0.5, 4) | 27.897 | 16.806 | 60,2430% |
+
+O aumento observado foi de 1,2905 ponto percentual, com 360 cidadãos adicionais recebendo ao menos uma sugestão posteriormente acessada. O teste teve 40.762 cidadãos com acessos futuros, dos quais 12.865 ficaram fora do denominador por acessarem apenas serviços já usados. O relatório agregado da execução está em `docs/avaliacao-temporal.json`. Os CSVs originais permanecem locais.
