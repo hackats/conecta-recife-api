@@ -182,3 +182,9 @@ mvn test -Dexportar=true
 O resultado fica em target/recomendacoes.csv. A execução da etapa 5 gerou 890.460 recomendações para os 89.046 cidadãos, com zero erros de validação. A suíte teve 28 testes aprovados e uma avaliação temporal opcional desativada. O CSV original e o CSV gerado ficam fora do Git.
 
 A integração HTTP está preparada e testada no backend. O front Kodiak e sua URL ainda estão pendentes, portanto o teste ponta a ponta será realizado quando a interface estiver disponível.
+
+## 10. Verificação e demo
+
+A etapa 6 acrescenta testes para cem IDs aleatórios, cidadão sem histórico, campo de crianças vazio e erros de entrada. O roteiro de execução local, a medição de desempenho e as pendências das personas oficiais estão em [Demo](docs/demo.md).
+
+O JAR foi empacotado e validado por uma chamada HTTP real. Execute scripts/iniciar-demo.ps1 para iniciar a API com os CSVs locais.

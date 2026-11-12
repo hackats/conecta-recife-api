@@ -1,0 +1,8 @@
+{
+  "ambiente" : "MockMvc local, sequencial, inclui verificações, após 10 aquecimentos",
+  "medianaMs" : 6.6653,
+  "semente" : 2026,
+  "p95Ms" : 20.1995,
+  "amostras" : 100,
+  "maxMs" : 66.9635
+}
