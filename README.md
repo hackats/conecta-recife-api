@@ -1,4 +1,4 @@
-# Hacka/TS — Conecta Recife (Etapa 1)
+# Hacka/TS — Conecta Recife (Etapas 1 e 2)
 
 Backend **Java 21 + Spring Boot 3.5.7**, Maven, com três `record` (`Cidadao`, `Servico`, `Clique`), leitura robusta dos CSVs e consultas REST.
 
@@ -93,9 +93,12 @@ server.port=8080
 
 **Importante:** inicie o Maven sempre na pasta que contém o `pom.xml` e a pasta `data`. No IntelliJ, configure o *Working directory* do Run/Debug para a raiz do projeto se necessário.
 
-## 6. Próxima etapa
+## 6. Recomendações
 
-O recomendador usará os `Map`s existentes, os cliques por cidadão e as listas `temas` e `publicosAlvo` para construir o top 10 personalizado. Não há recomendador ainda: esta entrega é somente a **etapa 1**.
+`GET /cidadaos/{id}/recomendacoes` devolve até dez objetos com `servicoId`, `nome` e `motivo`. Cidadãos desconhecidos recebem HTTP 404. Serviços já acessados pelo cidadão são excluídos.
+
+A pontuação soma o logaritmo de 1 mais os cliques gerais, duas vezes o mesmo cálculo para a faixa etária e o mesmo cálculo para o segmento de perfil com mais cliques naquele serviço. A correspondência entre marcador e público-alvo vale 5 pontos e um tema em comum com os serviços acessados vale 4 pontos. Empates são resolvidos pelo menor identificador. Sem cliques próprios, ainda entram os sinais de popularidade e perfil.
+
 
 ## Verificações incluídas
 
