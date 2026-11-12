@@ -1,0 +1,41 @@
+package br.com.conectarecife.model;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+
+public record Servico(
+        Integer servicoId,
+        String itemNome,
+        String nome,
+        String nomeResumido,
+        String orgaoNome,
+        String orgaoSigla,
+        List<String> temas,
+        List<String> grupos,
+        List<String> publicosAlvo,
+        List<String> palavrasChave,
+        String natureza,
+        String descricao,
+        String requisitos,
+        String passos,
+        String manifestacao,
+        String prioridadeAtendimento,
+        Boolean gratuito,
+        String canalWeb,
+        String canalApp,
+        String canalChat,
+        Integer seloAcesso,
+        String seloAcessoDescricao,
+        Integer nivelDigitalAtual,
+        Integer nivelDigitalIdeal,
+        String statusAtual,
+        String statusIdeal,
+        LocalDate ultimaAtualizacao,
+        Long cliquesHistorico,
+        Long pessoasUnicasHistorico,
+        Long aparelhosSemLoginHistorico,
+        BigDecimal notaMedia,
+        Long avaliacoesComNota,
+        Boolean temHistorico
+) {}

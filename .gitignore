@@ -1,0 +1,12 @@
+# Build e IDE
+target/
+.idea/
+*.iml
+.vscode/
+
+# Dados fornecidos para o desafio (não publicar)
+data/*.csv
+
+# Logs e arquivos de sistema
+*.log
+.DS_Store
