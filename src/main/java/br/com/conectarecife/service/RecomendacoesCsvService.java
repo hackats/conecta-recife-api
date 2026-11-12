@@ -13,7 +13,7 @@ import java.util.*;
 @Service
 public class RecomendacoesCsvService {
     public record Validacao(boolean valido, int cidadaos, long linhas, long totalErros, List<String> erros) {}
-    private static final List<String> CABECALHO = List.of("cidadao_id", "servico_id", "posicao", "motivo");
+    private static final List<String> CABECALHO = List.of("cidadao_id", "posicao", "servico_id", "motivo");
     private static final class Pessoa {
         int linhas;
         final Set<Integer> servicos = new HashSet<>();
@@ -53,8 +53,8 @@ public class RecomendacoesCsvService {
                         throw new IOException("Cidadão sem serviços elegíveis; exportação completa indisponível");
                     }
                     for (var recomendacao : recomendacoes) {
-                        csv.printRecord(cidadao.cidadaoId(), recomendacao.servicoId(),
-                                ++posicao, recomendacao.motivo());
+                        csv.printRecord(cidadao.cidadaoId(), ++posicao,
+                                recomendacao.servicoId(), recomendacao.motivo());
                     }
                 }
             }
@@ -130,6 +130,6 @@ public class RecomendacoesCsvService {
         } catch (NumberFormatException erro) {
             erros.adicionar("servico_id e posicao devem ser inteiros");
         }
-        if (registro.get("motivo").isBlank()) erros.adicionar("Motivo vazio");
+
     }
 }

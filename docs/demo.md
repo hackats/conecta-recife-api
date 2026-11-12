@@ -30,9 +30,17 @@ Após dez aquecimentos, a mediana foi 6,6653 ms, o p95 20,1995 ms e o máximo 66
 
 ## Pendências explícitas
 
-- As oito personas oficiais do guia ainda precisam de IDs ou descrições. O link do Drive não ficou acessível pela ferramenta durante esta etapa. Os testes com essas personas não foram realizados.
+- As oito personas oficiais foram localizadas no tutorial da pasta do Drive e incluídas nos testes parametrizados da API. A revisão visual no front ainda depende da interface Kodiak.
 - O front Kodiak ainda está em construção.
 - A hospedagem externa e sua URL HTTPS não foram configuradas. A execução local foi empacotada e verificada.
 - Preferências, solicitações e eventos ficam em memória e são perdidos ao reiniciar. A API permanece sem autenticação para os IDs simulados.
 
 A branch da etapa 6 parte da etapa 5. O pull request deve ser revisado após ou junto da etapa 5, preservando essa dependência.
+
+## Conferência com o guia oficial
+
+O tutorial.pdf foi acessado por requisição direta à pasta pública do Drive. As oito personas oficiais agora são verificadas pelos testes da API, com consulta do cidadão, dez serviços existentes e distintos, motivos preenchidos e exclusão dos serviços já usados.
+
+A nova execução teve 39 testes aprovados e apenas a avaliação hit@10 opcional desativada. O CSV completo foi regenerado com as colunas na ordem oficial cidadao_id,posicao,servico_id,motivo. A validação confirmou 89.046 cidadãos, 890.460 linhas e zero erros. O motivo pode ficar vazio conforme o guia, embora o gerador continue produzindo explicações.
+
+A medição anterior acima permanece como registro daquela execução. Os testes das personas validam o contrato e a consistência das recomendações. A avaliação visual e qualitativa no celular permanece pendente do front.

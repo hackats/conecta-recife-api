@@ -47,9 +47,9 @@ Abandono precisa ser registrado explicitamente pelo front. Fechar o navegador se
 
 ## CSV de recomendações
 
-O download gera um arquivo UTF-8 no formato RFC 4180, com cabeçalho cidadao_id,servico_id,posicao,motivo. Há uma linha por recomendação, ordenada por cidadão e posição. O arquivo completo pode levar alguns minutos para ser gerado. Configure o timeout do cliente conforme essa operação.
+O download gera um arquivo UTF-8 no formato RFC 4180, com cabeçalho cidadao_id,posicao,servico_id,motivo. Há uma linha por recomendação, ordenada por cidadão e posição. O arquivo completo pode levar alguns minutos para ser gerado. Configure o timeout do cliente conforme essa operação.
 
-O validador verifica UTF-8, cabeçalho, quatro colunas, cidadãos e serviços existentes, cobertura de todos os cidadãos carregados, no máximo dez recomendações por pessoa, serviços distintos, posições consecutivas de 1 a 10 e motivo preenchido. O retorno inclui valido, cidadaos, linhas, totalErros e até vinte mensagens de erro. Um arquivo inválido retorna 200 com valido=false. O limite de upload é 300 MB.
+O validador verifica UTF-8, cabeçalho, quatro colunas, cidadãos e serviços existentes, cobertura de todos os cidadãos carregados, no máximo dez recomendações por pessoa, serviços distintos, posições consecutivas de 1 a 10; o motivo pode ficar vazio, conforme o guia. O retorno inclui valido, cidadaos, linhas, totalErros e até vinte mensagens de erro. Um arquivo inválido retorna 200 com valido=false. O limite de upload é 300 MB.
 
 A geração usa o recomendador e as preferências atuais, escreve em arquivo temporário e valida antes de disponibilizar o resultado. Uma falha preserva o arquivo anterior. O arquivo gerado permanece local e está excluído do Git.
 

@@ -59,6 +59,16 @@ class Etapa6IntegrationTest {
         }
     }
 
+    @org.junit.jupiter.params.ParameterizedTest
+    @org.junit.jupiter.params.provider.ValueSource(strings = {
+            "C007938", "C068579", "C059592", "C036462",
+            "C039227", "C076260", "C006566", "C062244"
+    })
+    void atendePersonasOficiais(String id) throws Exception {
+        mvc.perform(get("/cidadaos/{id}", id)).andExpect(status().isOk());
+        verificar(id);
+    }
+
     @Test
     void atendeSemHistoricoECriancasVazio() throws Exception {
         var semHistorico = store.listarCidadaos().stream()

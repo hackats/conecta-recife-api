@@ -79,14 +79,13 @@ class Etapa5Test {
         assertThat(validacao.valido()).isTrue();
         assertThat(validacao.cidadaos()).isEqualTo(1);
         assertThat(validacao.linhas()).isEqualTo(1);
-        assertThat(Files.readString(arquivo)).startsWith("cidadao_id,servico_id,posicao,motivo");
-        String cabecalho = "cidadao_id,servico_id,posicao,motivo\n";
+        assertThat(Files.readString(arquivo)).startsWith("cidadao_id,posicao,servico_id,motivo");
+        String cabecalho = "cidadao_id,posicao,servico_id,motivo\n";
         for (String invalido : List.of(
-                cabecalho, cabecalho + "a,999,1,motivo\n",
+                cabecalho, cabecalho + "a,1,999,motivo\n",
                 cabecalho + "desconhecido,1,1,motivo\n",
-                cabecalho + "a,1,1,\n",
-                cabecalho + "a,1,2,motivo\n",
-                cabecalho + "a,1,1,motivo\na,1,2,motivo\n",
+                cabecalho + "a,2,1,motivo\n",
+                cabecalho + "a,1,1,motivo\na,2,1,motivo\n",
                 cabecalho + "a,1,1,motivo\n".repeat(11),
                 cabecalho + "a,1,1,\"aspas abertas",
                 "cabecalho incorreto\n")) {
