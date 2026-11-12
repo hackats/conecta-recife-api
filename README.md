@@ -188,3 +188,7 @@ A integração HTTP está preparada e testada no backend. O front Kodiak e sua U
 A etapa 6 acrescenta testes para cem IDs aleatórios, cidadão sem histórico, campo de crianças vazio e erros de entrada. O roteiro de execução local, a medição de desempenho e as pendências das personas oficiais estão em [Demo](docs/demo.md).
 
 O JAR foi empacotado e validado por uma chamada HTTP real. Execute scripts/iniciar-demo.ps1 para iniciar a API com os CSVs locais.
+
+## Melhorias da mentoria e validação final
+
+A integração das etapas 5 e 6 e as melhorias de sessão anônima, busca e checklist estão na main. Consulte [contratos da mentoria](docs/mentoria.md), [validação local da etapa 7](docs/validacao-etapa7.md) e [roteiro de apresentação e plano B](docs/pitch-etapa7.md). O relatório da etapa 7 registra os resultados atuais e as pendências de visitas anônimas, frontend e publicação.
