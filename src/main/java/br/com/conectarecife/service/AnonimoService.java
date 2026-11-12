@@ -37,7 +37,7 @@ public class AnonimoService {
             semanas.forEach((id, valores) -> {
                 Collections.sort(valores);
                 // Mediana das semanas observadas limita a influência de mutirões isolados.
-                popularidade.put(id, Math.log1p(valores.get(valores.size() / 2)));
+                popularidade.put(id, Math.log1p(valores.get((valores.size() - 1) / 2)));
             });
         }
         Path visitas = Path.of(diretorio, "visitas_sem_login.csv");
@@ -67,9 +67,17 @@ public class AnonimoService {
     }
 
     public Resposta recomendar(List<Integer> acessados) {
-        if (acessados.size() > 50 || acessados.stream().anyMatch(id -> id == null || store.findServico(id) == null))
+        return recomendar(acessados, List.of());
+    }
+
+    public Resposta recomendar(List<Integer> acessados, List<Integer> ignorados) {
+        if (ignorados == null || ignorados.size() > 50
+                || ignorados.stream().anyMatch(id -> id == null || store.findServico(id) == null))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Informe até 50 serviços válidos sem interesse");
+        if (acessados == null || acessados.size() > 50 || acessados.stream().anyMatch(id -> id == null || store.findServico(id) == null))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Informe até 50 serviços válidos da sessão atual");
         Set<Integer> usados = new HashSet<>(acessados);
+        usados.addAll(ignorados);
         Map<Integer, Integer> destinos = acessados.isEmpty() ? Map.of()
                 : transicoes.getOrDefault(acessados.getLast(), Map.of());
         double total = destinos.values().stream().mapToDouble(Integer::doubleValue).sum();

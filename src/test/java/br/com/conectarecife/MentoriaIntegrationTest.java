@@ -17,7 +17,7 @@ class MentoriaIntegrationTest {
     @Autowired DadosStore store;
     @Test void endpointsDaBuscaESessaoRespondem() throws Exception {
         mvc.perform(get("/servicos/busca").param("q", "quero emprego")).andExpect(status().isOk()).andExpect(jsonPath("$[0].servicoId").isNumber());
-        mvc.perform(get("/anonimo/recomendacoes")).andExpect(status().isOk()).andExpect(jsonPath("$.recomendacoes[0].servicoId").isNumber());
+        mvc.perform(get("/anonimo/recomendacoes")).andExpect(header().string("Cache-Control", "no-store")).andExpect(status().isOk()).andExpect(jsonPath("$.recomendacoes[0].servicoId").isNumber());
         mvc.perform(get("/anonimo/recomendacoes").param("acessados", "999999")).andExpect(status().isBadRequest());
     }
     @Test void progressoAceitaRepeticaoDesmarcacaoERejeitaPosicoesInvalidas() throws Exception {

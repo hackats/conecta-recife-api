@@ -24,3 +24,11 @@ A versão do backend está empacotada e testada. A entrega completa continua com
 - Os números de hit@10 existentes no README são de execução anterior. Esta etapa não realizou nova medição dessa métrica.
 
 O roteiro e o plano B estão em `pitch-etapa7.md`. Os contratos das melhorias estão em `mentoria.md`.
+
+## Revisão adicional da mentoria
+
+Nova consulta à pasta oficial e busca exata no Drive confirmaram que `visitas_sem_login.csv` continua indisponível. A pasta acessível contém tutorial e planilha.
+
+A revisão acrescentou exclusão explícita por sessão com `ignorados`, respostas anônimas com `Cache-Control: no-store` e mediana inferior para reduzir a influência de um pico isolado quando há duas semanas observadas. O teste específico compara Bolsa Família com uso estável de vagas de emprego e confere a exclusão voluntária, sem inferência de elegibilidade.
+
+`mvn package` passou com 45 testes, zero falhas, zero erros e dois testes opcionais desativados, totalizando 43 aprovados. Os opcionais são exportação completa e avaliação hit@10. A exportação completa anterior permanece válida para o recomendador de cidadãos, que não foi alterado nesta revisão. O JAR foi atualizado.
