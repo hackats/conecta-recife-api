@@ -57,6 +57,25 @@ Chamem após uma pausa curta de digitação, por exemplo 250 ms. A API normaliza
 
 Na tela, exibam “Não encontramos um serviço com esse termo. Tente outra busca.” quando a lista for vazia.
 
+## Busca por voz e resposta falada
+
+O recurso de voz reutiliza a busca existente. Não enviem áudio para a API e não criem um endpoint novo para isso.
+
+1. O botão de microfone inicia o reconhecimento de fala no navegador.
+2. Enquanto escuta, exibam um estado claro como “Ouvindo…” e um botão para cancelar.
+3. Ao receber a transcrição, preencham o campo de busca para a pessoa revisar.
+4. Chamem `GET /servicos/busca?q={transcrição codificada}` com o mesmo debounce da busca digitada.
+5. Mostrem os resultados em texto sempre.
+6. Disponibilizem um botão separado “Ouvir resposta” em cada resultado, ou na resposta selecionada, usando a síntese de fala do navegador.
+
+O texto continua sendo a fonte principal da resposta. A fala é uma alternativa opcional. Não iniciem áudio automaticamente, pois isso pode surpreender a pessoa e conflitar com leitores de tela.
+
+Para a leitura, usem uma frase curta, por exemplo: “Encontrei o serviço {nome}. {motivo}”. Não leiam URLs, identificadores internos, campos vazios ou todo o conteúdo do catálogo de uma vez.
+
+Se o navegador não suportar reconhecimento de fala, mantenham a busca por texto normal e ocultem ou desabilitem o microfone com explicação. Se a permissão do microfone for negada, mostrem uma mensagem simples e deixem a pessoa digitar. A gravação deve durar somente enquanto o controle estiver ativo e não deve ser guardada.
+
+O botão precisa ter rótulo acessível, por exemplo `aria-label="Buscar por voz"`. A resposta falada também precisa de botão de parar e controle de volume ou voz quando o navegador disponibilizar essas opções. Para português do Brasil, configurem `pt-BR` quando a API do navegador aceitar idioma.
+
 ## Navegação sem login
 
 Não criem aba adicional. Usem o endpoint dentro da mesma navegação pelo catálogo.
