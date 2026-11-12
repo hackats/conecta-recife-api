@@ -1,4 +1,4 @@
-# Hacka/TS — Conecta Recife (Etapas 1, 2 e 3)
+# Hacka/TS — Conecta Recife (Etapas 1 a 4)
 
 Backend **Java 21 + Spring Boot 3.5.7**, Maven, com três `record` (`Cidadao`, `Servico`, `Clique`), leitura robusta dos CSVs e consultas REST.
 
@@ -134,3 +134,37 @@ Validação de 17/08/2026 até 05/09/2026, com treino anterior a 17/08. Teste de
 | Pesos escolhidos (1, 0.5, 4) | 27.897 | 16.806 | 60,2430% |
 
 O aumento observado foi de 1,2905 ponto percentual, com 360 cidadãos adicionais recebendo ao menos uma sugestão posteriormente acessada. O teste teve 40.762 cidadãos com acessos futuros, dos quais 12.865 ficaram fora do denominador por acessarem apenas serviços já usados. O relatório agregado da execução está em `docs/avaliacao-temporal.json`. Os CSVs originais permanecem locais.
+
+## 8. Jornada, solicitações e consentimento
+
+`GET /servicos/{id}/jornada` retorna `servicoId`, `nome`, `requisitos` e `passos`. Os dois últimos campos são listas derivadas do catálogo, com HTML removido, marcadores de lista limpos e substituições simples de vocabulário. Condições e prazos são preservados. Quando o campo está vazio, a resposta orienta consultar o órgão responsável. IDs desconhecidos recebem 404.
+
+`POST /solicitacoes` recebe o corpo abaixo e responde 201, com protocolo e cabeçalho `Location`.
+
+```json
+{"cidadaoId":"C000001","servicoId":1}
+```
+
+`GET /solicitacoes/{protocolo}` consulta o andamento. A resposta inclui `simulada: true` e a linha do tempo das etapas já ocorridas. A simulação começa em RECEBIDA, passa a EM_ANALISE após 30 segundos e a CONCLUIDA após 60 segundos. As datas são instantes UTC. O protocolo pertence à simulação local.
+
+O cabeçalho opcional `Idempotency-Key` permite reenviar o pedido e recuperar o mesmo protocolo, inclusive em chamadas simultâneas. A chave tem escopo por cidadão. Reutilizar a chave para outro serviço recebe 409. Sem chave, cada POST cria uma solicitação. Campos obrigatórios ausentes recebem 400; cidadão, serviço ou protocolo desconhecido recebe 404.
+
+`GET /preferencias?cidadaoId=C000001` consulta as preferências. `PUT /preferencias` altera o consentimento.
+
+```json
+{
+  "cidadaoId": "C000001",
+  "consentimentoSaude": true,
+  "aceitaNotificacao": false
+}
+```
+
+`cidadaoId` e `consentimentoSaude` são obrigatórios no PUT. `aceitaNotificacao` é opcional e preserva o valor atual quando omitido. O consentimento de saúde começa desligado para todos. A preferência de notificações começa no valor do CSV e pode ser alterada de forma independente.
+
+Com consentimento, os marcadores diabetes, hipertensão, saúde mental, gestação e deficiência podem acrescentar 5 pontos ao componente de perfil quando o nome, público-alvo ou palavras-chave do serviço correspondem ao marcador. A regra usa termos explícitos do catálogo. O motivo desse sinal é sempre “Serviço de saúde para o seu acompanhamento”. A revogação vale para a próxima chamada de recomendação. Gestação e deficiência foram retiradas dos segmentos gerais para respeitar essa opção. O histórico de cliques e a popularidade continuam sendo sinais próprios do recomendador.
+
+Solicitações, chaves de repetição e preferências ficam em memória e são perdidas ao reiniciar a API. Os endpoints usam os IDs simulados e ainda não possuem autenticação de cidadãos. Essa entrega serve ao protótipo local do hackathon.
+
+Os pesos da etapa 3 foram mantidos. O relatório temporal e os percentuais da seção 7 documentam aquela versão, anterior ao controle de consentimento. A etapa 4 valida o comportamento do consentimento com testes determinísticos.
+
+`Etapa4Test` cobre consentimento e revogação, motivos neutros, concorrência, idempotência, andamento simulado e tratamento da jornada. `Etapa4IntegrationTest` exercita os endpoints e os erros de entrada. Execute `mvn test` para a suíte cotidiana.

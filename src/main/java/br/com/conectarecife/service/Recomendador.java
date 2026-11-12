@@ -53,8 +53,16 @@ public class Recomendador {
 
     private final DadosStore store;
 
+    private final PreferenciasService preferencias;
+
     public Recomendador(DadosStore store) {
+        this(store, new PreferenciasService(store));
+    }
+
+    @org.springframework.beans.factory.annotation.Autowired
+    public Recomendador(DadosStore store, PreferenciasService preferencias) {
         this.store = store;
+        this.preferencias = preferencias;
     }
 
     public List<Recomendacao> recomendar(Cidadao cidadao) {
@@ -98,14 +106,16 @@ public class Recomendador {
             store.transicoesDe(usado).forEach((destino, quantidade) ->
                     transicoes.merge(destino, quantidade, Integer::sum));
         }
+        boolean consentimentoSaude = preferencias.consultar(cidadao.cidadaoId()).consentimentoSaude();
         return store.listarServicos().stream()
                 .filter(servico -> !usados.contains(servico.servicoId()))
-                .map(servico -> classificar(servico, porFaixa, perfil, temasVisitados, transicoes))
+                .map(servico -> classificar(servico, porFaixa, perfil, temasVisitados, transicoes, cidadao, consentimentoSaude))
                 .toList();
     }
 
     private Sinais classificar(Servico servico, Map<Integer, Integer> porFaixa,
-                                 Set<String> perfil, Set<String> temasVisitados, Map<Integer, Integer> transicoes) {
+                                 Set<String> perfil, Set<String> temasVisitados, Map<Integer, Integer> transicoes,
+                                 Cidadao cidadao, boolean consentimentoSaude) {
         int cliques = store.contarCliques(servico.servicoId());
         int cliquesFaixa = porFaixa.getOrDefault(servico.servicoId(), 0);
         int cliquesPerfil = perfil.stream()
@@ -116,9 +126,11 @@ public class Recomendador {
         boolean combinaHistorico = temas.computeIfAbsent(servico.servicoId(), id -> normalizarLista(servico.temas())).stream()
                 .anyMatch(temasVisitados::contains);
 
+        boolean combinaSaude = consentimentoSaude && correspondeSaude(cidadao, servico);
         double popularidade = Math.log1p(cliques) + 2 * Math.log1p(cliquesFaixa)
                 + Math.log1p(cliquesPerfil);
         List<String> motivos = new ArrayList<>();
+        if (combinaSaude) motivos.add("Serviço de saúde para o seu acompanhamento");
         if (combinaPerfil) motivos.add("Compatível com seu perfil");
         if (combinaHistorico) motivos.add("Temas em comum com serviços que você acessou");
         List<String> motivosPerfil = List.copyOf(motivos);
@@ -128,8 +140,22 @@ public class Recomendador {
         if (cliques > 0) motivos.add("Acessado no catálogo");
         return new Sinais(new Recomendacao(servico.servicoId(), servico.nome(),
                 String.join(". ", motivos)), popularidade,
-                (combinaPerfil ? 5 : 0) + (combinaHistorico ? 4 : 0),
+                (combinaPerfil ? 5 : 0) + (combinaHistorico ? 4 : 0) + (combinaSaude ? 5 : 0),
                 Math.log1p(transicoes.getOrDefault(servico.servicoId(), 0)), motivosPerfil, List.copyOf(motivos));
+    }
+
+    private static boolean correspondeSaude(Cidadao cidadao, Servico servico) {
+        String texto = normalizar(servico.nome() + " " + String.join(" ", servico.publicosAlvo())
+                + " " + String.join(" ", servico.palavrasChave()));
+        return corresponde(cidadao.diabetes(), texto, "diabet")
+                || corresponde(cidadao.hipertensao(), texto, "hipertens")
+                || corresponde(cidadao.saudeMental(), texto, "saude mental", "psicolog", "psiquiatr")
+                || corresponde(cidadao.gestante(), texto, "gestante", "pre-natal", "prenatal")
+                || corresponde(cidadao.pessoaComDeficiencia(), texto, "pessoa com deficiencia", "pcd");
+    }
+
+    private static boolean corresponde(Boolean marcador, String texto, String... termos) {
+        return Boolean.TRUE.equals(marcador) && java.util.Arrays.stream(termos).anyMatch(texto::contains);
     }
 
     private static Set<String> normalizarLista(List<String> valores) {

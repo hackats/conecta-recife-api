@@ -18,7 +18,7 @@ public class ApiExceptionHandler {
                 exception.getStatusCode(),
                 exception.getReason() == null ? "Recurso não encontrado" : exception.getReason()
         );
-        problem.setTitle("Não foi possível encontrar o recurso");
+        problem.setTitle("Não foi possível atender à solicitação");
         problem.setProperty("path", request.getRequestURI());
         return problem;
     }

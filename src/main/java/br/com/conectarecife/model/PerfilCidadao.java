@@ -16,8 +16,8 @@ public final class PerfilCidadao {
         adicionar(perfil, cidadao.proprietarioImovel(), "proprietario de imoveis");
         adicionar(perfil, cidadao.tutorAnimal(), "tutor de animal");
         adicionar(perfil, cidadao.estudante(), "estudante");
-        adicionar(perfil, cidadao.pessoaComDeficiencia(), "pessoa com deficiencia - pcd");
-        adicionar(perfil, cidadao.gestante(), "gestante");
+
+
         return perfil;
     }
 

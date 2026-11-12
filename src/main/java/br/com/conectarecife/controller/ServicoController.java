@@ -16,6 +16,11 @@ public class ServicoController {
         this.store = store;
     }
 
+    @GetMapping("/{id}/jornada")
+    public br.com.conectarecife.service.JornadaServico.Jornada jornada(@PathVariable Integer id) {
+        return br.com.conectarecife.service.JornadaServico.criar(buscarPorId(id));
+    }
+
     @GetMapping("/{id}")
     public Servico buscarPorId(@PathVariable Integer id) {
         Servico servico = store.findServico(id);
