@@ -1,4 +1,4 @@
-# Hacka/TS — Conecta Recife (Etapas 1 a 5)
+# Hacka/TS — Conecta Recife
 
 Backend **Java 21 + Spring Boot 3.5.7**, Maven, com três `record` (`Cidadao`, `Servico`, `Clique`), leitura robusta dos CSVs e consultas REST.
 
