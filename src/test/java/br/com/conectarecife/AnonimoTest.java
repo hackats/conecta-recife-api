@@ -24,8 +24,11 @@ class AnonimoTest {
                 "semana,servico_id,login,visitantes\n2026-01-05,1,nao,10\n2026-01-12,1,nao,999999\n2026-01-05,2,nao,100\n2026-01-12,2,nao,100\n");
         var service = new AnonimoService(store, dir.toString());
         assertThat(service.recomendar(List.of()).recomendacoes().getFirst().servicoId()).isEqualTo(2);
-        assertThat(service.recomendar(List.of(), List.of(1)).recomendacoes())
-                .extracting(r -> r.servicoId()).containsExactly(2);
+        assertThat(service.recomendar(List.of(1)).recomendacoes())
+                .extracting(r -> r.servicoId()).doesNotContain(1);
+        // Uma nova sessão volta a permitir o serviço, sem bloqueio persistente.
+        assertThat(service.recomendar(List.of()).recomendacoes())
+                .extracting(r -> r.servicoId()).contains(1);
     }
 
     @Test void contextoSuperaPicoEDiversificaSemInferirPerfil() throws Exception {
@@ -46,11 +49,7 @@ class AnonimoTest {
         assertThat(resultado.recomendacoes()).extracting(r -> r.servicoId()).doesNotHaveDuplicates().doesNotContain(1);
         assertThat(resultado.recomendacoes().size()).isLessThanOrEqualTo(10);
         assertThatThrownBy(() -> service.recomendar(List.of(999))).isInstanceOf(org.springframework.web.server.ResponseStatusException.class);
-        assertThat(service.recomendar(List.of(1), List.of(2)).recomendacoes())
-                .extracting(r -> r.servicoId()).doesNotContain(1, 2);
         assertThat(service.recomendar(List.of(1)).recomendacoes().getFirst().servicoId()).isEqualTo(2);
-        assertThatThrownBy(() -> service.recomendar(List.of(), List.of(999)))
-                .isInstanceOf(org.springframework.web.server.ResponseStatusException.class);
         Files.delete(dir.resolve("visitas_sem_login.csv"));
         assertThat(new AnonimoService(store, dir.toString()).recomendar(List.of()).transicoesDisponiveis()).isFalse();
     }

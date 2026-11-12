@@ -10,9 +10,8 @@ public class AnonimoController {
     public AnonimoController(AnonimoService service) { this.service = service; }
     @GetMapping("/anonimo/recomendacoes")
     public AnonimoService.Resposta recomendar(@RequestParam(defaultValue = "") List<Integer> acessados,
-            @RequestParam(defaultValue = "") List<Integer> ignorados,
             jakarta.servlet.http.HttpServletResponse response) {
         response.setHeader("Cache-Control", "no-store");
-        return service.recomendar(acessados, ignorados);
+        return service.recomendar(acessados);
     }
 }

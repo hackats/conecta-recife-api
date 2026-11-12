@@ -2,7 +2,7 @@
 
 ## Recomendações sem login
 
-`GET /anonimo/recomendacoes?acessados=458,1359` recebe até 50 IDs válidos, na ordem em que foram acessados na sessão atual. O parâmetro opcional `ignorados=34,35` recebe até 50 serviços marcados como “não tenho interesse”. Eles são excluídos apenas dessa requisição, sem inferir elegibilidade. O cliente deve manter essas escolhas na sessão e limpar as listas ao iniciar uma nova sessão. A resposta contém `transicoesDisponiveis` e até dez recomendações distintas do catálogo, excluindo serviços já acessados.
+`GET /anonimo/recomendacoes?acessados=458,1359` recebe até 50 IDs válidos, na ordem em que foram acessados na sessão atual. O cliente deve limpar o contexto ao iniciar uma nova sessão. Os serviços podem reaparecer em sessões futuras conforme o contexto. A elegibilidade é conferida pelas regras do serviço. A resposta contém `transicoesDisponiveis` e até dez recomendações distintas do catálogo, excluindo serviços já acessados.
 
 As transições vêm de pares consecutivos de `visitas_sem_login.csv`, agrupados por visitante e sessão e ordenados por `ordem_na_sessao`. A última escolha da sessão fornece o sinal de transição. Os temas acessados fornecem contexto explícito. A popularidade usa o logaritmo da mediana inferior de visitantes das semanas observadas com `login=nao`, com contribuição limitada a um ponto. Semanas ausentes permanecem sem observação. A seleção limita a dois serviços por tema principal, podendo retornar menos de dez.
 
@@ -22,4 +22,4 @@ O progresso é autodeclarado, com `autodeclarado=true`. A confirmação oficial 
 
 Na integração visual, use checkboxes com rótulos completos, foco visível e navegação por teclado. Apresente a descrição textual junto ao progresso, com valores acessíveis de mínimo 0, máximo 100 e valor atual. Este repositório contém a API. A integração visual no Kodiak depende do frontend.
 
-A revisão adicional testa um pico isolado em uma amostra de duas semanas, a exclusão explícita de Bolsa Família e a independência entre escolhas de sessões distintas.
+A revisão adicional testa um pico isolado em uma amostra de duas semanas, o retorno de serviços em uma nova sessão e a independência entre sessões.
