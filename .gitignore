@@ -10,3 +10,6 @@ data/*.csv
 # Logs e arquivos de sistema
 *.log
 .DS_Store
+
+# Exportações do desafio permanecem locais
+recomendacoes*.csv

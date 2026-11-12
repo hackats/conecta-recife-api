@@ -1,4 +1,4 @@
-# Hacka/TS — Conecta Recife (Etapas 1 a 4)
+# Hacka/TS — Conecta Recife (Etapas 1 a 5)
 
 Backend **Java 21 + Spring Boot 3.5.7**, Maven, com três `record` (`Cidadao`, `Servico`, `Clique`), leitura robusta dos CSVs e consultas REST.
 
@@ -168,3 +168,17 @@ Solicitações, chaves de repetição e preferências ficam em memória e são p
 Os pesos da etapa 3 foram mantidos. O relatório temporal e os percentuais da seção 7 documentam aquela versão, anterior ao controle de consentimento. A etapa 4 valida o comportamento do consentimento com testes determinísticos.
 
 `Etapa4Test` cobre consentimento e revogação, motivos neutros, concorrência, idempotência, andamento simulado e tratamento da jornada. `Etapa4IntegrationTest` exercita os endpoints e os erros de entrada. Execute `mvn test` para a suíte cotidiana.
+
+## 9. Eventos, métricas e exportação
+
+A etapa 5 implementa POST /eventos, GET /metricas, GET /recomendacoes.csv e POST /recomendacoes/validar. Os contratos, exemplos e configuração de CORS para o Kodiak estão em [Integração do front](docs/integracao-front.md).
+
+Para gerar e validar o arquivo completo localmente durante os testes, execute o comando abaixo.
+
+```powershell
+mvn test -Dexportar=true
+```
+
+O resultado fica em target/recomendacoes.csv. A execução da etapa 5 gerou 890.460 recomendações para os 89.046 cidadãos, com zero erros de validação. A suíte teve 28 testes aprovados e uma avaliação temporal opcional desativada. O CSV original e o CSV gerado ficam fora do Git.
+
+A integração HTTP está preparada e testada no backend. O front Kodiak e sua URL ainda estão pendentes, portanto o teste ponta a ponta será realizado quando a interface estiver disponível.

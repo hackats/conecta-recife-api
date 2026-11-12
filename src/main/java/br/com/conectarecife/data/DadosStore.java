@@ -123,6 +123,10 @@ public class DadosStore {
         return popularidadePorPerfil.getOrDefault(publico, Map.of()).getOrDefault(servicoId, 0);
     }
 
+    public Collection<Cidadao> listarCidadaos() {
+        return cidadaos.values();
+    }
+
     public int totalCidadaos() { return cidadaos.size(); }
     public int totalServicos() { return servicos.size(); }
     public int totalCliques() {
