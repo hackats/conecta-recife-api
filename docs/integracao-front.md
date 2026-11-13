@@ -76,6 +76,35 @@ Se o navegador não suportar reconhecimento de fala, mantenham a busca por texto
 
 O botão precisa ter rótulo acessível, por exemplo `aria-label="Buscar por voz"`. A resposta falada também precisa de botão de parar e controle de volume ou voz quando o navegador disponibilizar essas opções. Para português do Brasil, configurem `pt-BR` quando a API do navegador aceitar idioma.
 
+## Assistente conversacional
+
+O assistente funciona no mesmo chat da tela inicial ou da busca. Não precisa de uma tela separada.
+
+```http
+POST /assistente/conversar
+Content-Type: application/json
+
+{
+  "mensagem": "Quero marcar uma consulta",
+  "cidadaoId": "C007938"
+}
+```
+
+`cidadaoId` é opcional. Enviem-no somente quando a pessoa tiver selecionado uma persona ou entrado na conta. O retorno contém:
+
+- `mensagem`, para o balão de resposta em texto;
+- `servicos`, com até três cards do catálogo, contendo `servicoId`, `nome` e `motivo`;
+- `acoes`, com rótulos e caminhos para orientar a interface;
+- `avisos`, para condições como uma linha do tempo simulada.
+
+O frontend mantém o histórico visual da conversa, mas cada pergunta é independente para a API. Ao tocar em um card de serviço, abram detalhes ou jornada usando o `servicoId`. Chamem o endpoint para dúvidas sobre serviços, jornada, protocolo, preferências, recomendações e novidades. Exemplo de anúncio de novidade: “quais são as novidades?”.
+
+Quando houver um cidadão selecionado e a pergunta pedir sugestões, o assistente usa as recomendações já calculadas para aquele cidadão. Sem cidadão, ele usa somente o catálogo. A resposta não confirma elegibilidade e não deve ser exibida como orientação jurídica ou de benefício.
+
+Para resposta por voz, o frontend pode ler o campo `mensagem` pelo mesmo controle de síntese de fala descrito acima. Mostrem sempre o texto e deixem a pessoa escolher quando ouvir.
+
+Estados de erro: mensagem vazia ou acima de 500 caracteres retorna 400, e um `cidadaoId` inexistente retorna 404. Exibam `detail` e preservem o campo digitado para edição.
+
 ## Navegação sem login
 
 Não criem aba adicional. Usem o endpoint dentro da mesma navegação pelo catálogo.

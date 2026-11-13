@@ -202,3 +202,7 @@ Expanda uma operação, clique em **Try it out**, preencha os parâmetros ou use
 A documentação usa springdoc-openapi 2.10.0, da linha compatível com Spring Boot 3.5, conforme a [matriz oficial](https://springdoc.org/v2/). Os esquemas são gerados a partir dos tipos Java e os testes conferem a cobertura dos endpoints, exemplos, respostas e carregamento da interface.
 
 A entrega usa os arquivos efetivamente disponíveis no Drive. A recomendação sem login serve ao fluxo existente do aplicativo, sem exigir uma aba adicional. O arquivo de visitas anônimas citado no tutorial é uma entrada opcional do carregador. Sua ausência não bloqueia a aplicação nem a entrega baseada em catálogo, contexto da sessão e uso semanal. `transicoesDisponiveis=false` informa a disponibilidade desse sinal específico.
+
+## Assistente conversacional
+
+`POST /assistente/conversar` recebe uma pergunta em linguagem natural e, opcionalmente, o `cidadaoId` da pessoa selecionada. Ele responde somente com informações fundamentadas no catálogo, nas jornadas, preferências, sugestões existentes e novidades do protótipo. A resposta combina texto, até três serviços sugeridos e ações de interface. O assistente não decide elegibilidade nem inventa regras públicas. Consulte o Swagger ou o guia de integração do frontend para os exemplos completos.

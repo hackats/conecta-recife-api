@@ -27,7 +27,7 @@ class OpenApiIntegrationTest {
                 operacoes++;
             }
         }
-        assertThat(operacoes).isEqualTo(16);
+        assertThat(operacoes).isEqualTo(17);
         assertThat(paths.get("/solicitacoes").get("post").get("responses").has("201")).isTrue();
         assertThat(paths.get("/recomendacoes.csv").get("get").get("responses").get("200")
                 .get("content").has("text/csv")).isTrue();
@@ -39,6 +39,8 @@ class OpenApiIntegrationTest {
         assertThat(schema.get("properties").has("cidadaoId")).isTrue();
         assertThat(paths.get("/recomendacoes/validar").get("post").get("requestBody").get("content")
                 .has("multipart/form-data")).isTrue();
+        assertThat(paths.get("/assistente/conversar").get("post").get("requestBody").get("content")
+                .get("application/json").get("example").get("mensagem").asText()).isEqualTo("Quero marcar uma consulta");
     }
 
     @Test void disponibilizaInterfaceEConfiguracao() throws Exception {

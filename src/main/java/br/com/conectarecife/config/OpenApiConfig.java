@@ -43,6 +43,7 @@ public class OpenApiConfig {
             exemplo(api, "/solicitacoes", Map.of("cidadaoId", "C007938", "servicoId", 1));
             exemplo(api, "/eventos", Map.of("eventoId", "demo-abertura-1", "jornadaId", "demo-jornada-1",
                     "cidadaoId", "C007938", "servicoId", 1, "etapa", "pedido", "tipo", "ABRIU"));
+            exemplo(api, "/assistente/conversar", Map.of("mensagem", "Quero marcar uma consulta", "cidadaoId", "C007938"));
             exemplo(api, "/servicos/{id}/jornada/progresso", java.util.List.of());
             api.getPaths().get("/preferencias").getPut().getRequestBody().getContent()
                     .values().forEach(media -> media.setExample(Map.of("cidadaoId", "C007938", "consentimentoSaude", false)));
