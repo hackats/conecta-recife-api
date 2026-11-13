@@ -206,3 +206,5 @@ A entrega usa os arquivos efetivamente disponíveis no Drive. A recomendação s
 ## Assistente conversacional
 
 `POST /assistente/conversar` recebe uma pergunta em linguagem natural e, opcionalmente, o `cidadaoId` da pessoa selecionada. Ele responde somente com informações fundamentadas no catálogo, nas jornadas, preferências, sugestões existentes e novidades do protótipo. A resposta combina texto, até três serviços sugeridos e ações de interface. O assistente não decide elegibilidade nem inventa regras públicas. Consulte o Swagger ou o guia de integração do frontend para os exemplos completos.
+
+O [documento de implementação no Kodiak](docs/kodiak-implementation.md) reúne telas, componentes, fluxos, estado de sessão, voz, assistente, acessibilidade, eventos e roteiro de aceitação do frontend.
